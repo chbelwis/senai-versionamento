@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_FIN_Ressarcimento_Passagens_Aereas_v1" targetNamespace="http://example.com/bpmn/FIN/RessarcimentoPassagensAereas/v1">
+  <bpmn:process id="FIN_Ressarcimento_Passagens_Aereas_v1" name="FIN – Ressarcimento de Passagens Aéreas v1" isExecutable="true">
+    <bpmn:documentation>Processo de ressarcimento de passagens aéreas no Brasil. Contém tarefas humanas e automáticas, gateways de decisão e integrações.</bpmn:documentation>
+
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_Solicitante" name="Solicitante">
+        <bpmn:flowNodeRef>Start_Solicitacao</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Enviar_Solicitacao</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Ajustar_Solicitacao</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Gestor" name="Gestor">
+        <bpmn:flowNodeRef>Task_Aprovacao_Gestor</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Controladoria" name="Controladoria">
+        <bpmn:flowNodeRef>Task_Analise_Controladoria</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Financeiro" name="Financeiro">
+        <bpmn:flowNodeRef>Task_Lancar_ERP</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Programar_Pagamento</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Automacao" name="Automação">
+        <bpmn:flowNodeRef>Task_Validar_Politica</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Detectar_Duplicidade</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Conciliar_Adiantamento</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Notificar_Encerramento</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+
+    <bpmn:startEvent id="Start_Solicitacao" name="Iniciar Solicitação"/>
+
+    <bpmn:userTask id="Task_Enviar_Solicitacao" name="Enviar Solicitação">
+      <bpmn:documentation>Preenchimento de formulário e anexos.</bpmn:documentation>
+    </bpmn:userTask>
+
+    <bpmn:serviceTask id="Task_Validar_Politica" name="Validar Política" implementation="##unspecified">
+      <bpmn:documentation>Validação automática: prazo, política, elegibilidade.</bpmn:documentation>
+    </bpmn:serviceTask>
+
+    <bpmn:serviceTask id="Task_Detectar_Duplicidade" name="Detectar Duplicidade" implementation="##unspecified">
+      <bpmn:documentation>Verificação por hash (cpf + eticket + data_ida) e regras correlatas.</bpmn:documentation>
+    </bpmn:serviceTask>
+
+    <bpmn:exclusiveGateway id="Gateway_Conforme_Politica" name="Conforme Política?"/>
+
+    <bpmn:userTask id="Task_Ajustar_Solicitacao" name="Ajustar Solicitação">
+      <bpmn:documentation>Solicitante corrige pendências e reenvia.</bpmn:documentation>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="Task_Aprovacao_Gestor" name="Aprovação do Gestor">
+      <bpmn:documentation>Gestor aprova ou reprova o pedido.</bpmn:documentation>
+    </bpmn:userTask>
+
+    <bpmn:exclusiveGateway id="Gateway_Aprovado_Gestor" name="Aprovado pelo Gestor?"/>
+
+    <bpmn:exclusiveGateway id="Gateway_Precisa_Controladoria" name="Precisa Controladoria?"/>
+
+    <bpmn:userTask id="Task_Analise_Controladoria" name="Análise Controladoria">
+      <bpmn:documentation>Revisão fiscal/financeira e exceções.</bpmn:documentation>
+    </bpmn:userTask>
+
+    <bpmn:exclusiveGateway id="Gateway_Conforme_Controladoria" name="Conforme Controladoria?"/>
+
+    <bpmn:exclusiveGateway id="Gateway_Tem_Adiantamento" name="Há Adiantamento?"/>
+
+    <bpmn:serviceTask id="Task_Conciliar_Adiantamento" name="Conciliar Adiantamento" implementation="##unspecified">
+      <bpmn:documentation>Concilia valores com adiantamentos existentes.</bpmn:documentation>
+    </bpmn:serviceTask>
+
+    <bpmn:userTask id="Task_Lancar_ERP" name="Lançar ERP">
+      <bpmn:documentation>Criação de título (AP/folha) no ERP.</bpmn:documentation>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="Task_Programar_Pagamento" name="Programar Pagamento">
+      <bpmn:documentation>Programação do pagamento conforme ciclo.</bpmn:documentation>
+    </bpmn:userTask>
+
+    <bpmn:serviceTask id="Task_Notificar_Encerramento" name="Notificar Encerramento" implementation="##unspecified">
+      <bpmn:documentation>Dispara e-mail/Teams e registra encerramento.</bpmn:documentation>
+    </bpmn:serviceTask>
+
+    <bpmn:endEvent id="End_Reprovado" name="Reprovado"/>
+    <bpmn:endEvent id="End_Concluido" name="Concluído"/>
+
+    <!-- Fluxos -->
+    <bpmn:sequenceFlow id="Flow_Start_To_Enviar" sourceRef="Start_Solicitacao" targetRef="Task_Enviar_Solicitacao"/>
+    <bpmn:sequenceFlow id="Flow_Enviar_To_Validar" sourceRef="Task_Enviar_Solicitacao" targetRef="Task_Validar_Politica"/>
+    <bpmn:sequenceFlow id="Flow_Validar_To_Duplicidade" sourceRef="Task_Validar_Politica" targetRef="Task_Detectar_Duplicidade"/>
+    <bpmn:sequenceFlow id="Flow_Duplicidade_To_GwPolitica" sourceRef="Task_Detectar_Duplicidade" targetRef="Gateway_Conforme_Politica"/>
+
+    <bpmn:sequenceFlow id="Flow_GwPolitica_NAO_Ajustar" sourceRef="Gateway_Conforme_Politica" targetRef="Task_Ajustar_Solicitacao">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[${!conformePolitica}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_GwPolitica_SIM_AprovGestor" sourceRef="Gateway_Conforme_Politica" targetRef="Task_Aprovacao_Gestor">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[${conformePolitica}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+
+    <bpmn:sequenceFlow id="Flow_Ajustar_To_Validar" sourceRef="Task_Ajustar_Solicitacao" targetRef="Task_Validar_Politica"/>
+
+    <bpmn:sequenceFlow id="Flow_AprovGestor_To_GwAprovado" sourceRef="Task_Aprovacao_Gestor" targetRef="Gateway_Aprovado_Gestor"/>
+
+    <bpmn:sequenceFlow id="Flow_GwAprovado_NAO_EndReprovado" sourceRef="Gateway_Aprovado_Gestor" targetRef="End_Reprovado">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[${!aprovadoGestor}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_GwAprovado_SIM_GwPrecisaCtrl" sourceRef="Gateway_Aprovado_Gestor" targetRef="Gateway_Precisa_Controladoria">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[${aprovadoGestor}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+
+    <bpmn:sequenceFlow id="Flow_GwPrecisaCtrl_SIM_AnaliseCtrl" sourceRef="Gateway_Precisa_Controladoria" targetRef="Task_Analise_Controladoria">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[${precisaControladoria}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_GwPrecisaCtrl_NAO_GwAdiantamento" sourceRef="Gateway_Precisa_Controladoria" targetRef="Gateway_Tem_Adiantamento">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[${!precisaControladoria}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+
+    <bpmn:sequenceFlow id="Flow_AnaliseCtrl_To_GwConformeCtrl" sourceRef="Task_Analise_Controladoria" targetRef="Gateway_Conforme_Controladoria"/>
+
+    <bpmn:sequenceFlow id="Flow_GwConformeCtrl_NAO_Ajustar" sourceRef="Gateway_Conforme_Controladoria" targetRef="Task_Ajustar_Solicitacao">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[${!conformeControladoria}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_GwConformeCtrl_SIM_GwAdiantamento" sourceRef="Gateway_Conforme_Controladoria" targetRef="Gateway_Tem_Adiantamento">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[${conformeControladoria}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+
+    <bpmn:sequenceFlow id="Flow_GwAdiantamento_SIM_Conciliar" sourceRef="Gateway_Tem_Adiantamento" targetRef="Task_Conciliar_Adiantamento">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[${adiantamentoExiste}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_GwAdiantamento_NAO_LancarERP" sourceRef="Gateway_Tem_Adiantamento" targetRef="Task_Lancar_ERP">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[${!adiantamentoExiste}]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+
+    <bpmn:sequenceFlow id="Flow_Conciliar_To_LancarERP" sourceRef="Task_Conciliar_Adiantamento" targetRef="Task_Lancar_ERP"/>
+
+    <bpmn:sequenceFlow id="Flow_LancarERP_To_ProgramarPgto" sourceRef="Task_Lancar_ERP" targetRef="Task_Programar_Pagamento"/>
+    <bpmn:sequenceFlow id="Flow_ProgramarPgto_To_Notificar" sourceRef="Task_Programar_Pagamento" targetRef="Task_Notificar_Encerramento"/>
+    <bpmn:sequenceFlow id="Flow_Notificar_To_EndConcluido" sourceRef="Task_Notificar_Encerramento" targetRef="End_Concluido"/>
+
+  </bpmn:process>
+</bpmn:definitions>

@@ -1,0 +1,12 @@
+{
+  "id": "form_aprovacao_gestor",
+  "title": "Aprovação do Gestor",
+  "fields": [
+    {"name": "resumo.valor_total", "label": "Valor total solicitado (R$)", "type": "currency", "required": false, "readOnly": true},
+    {"name": "resumo.passageiro", "label": "Passageiro", "type": "text", "readOnly": true},
+    {"name": "resumo.periodo", "label": "Período da Viagem", "type": "text", "readOnly": true},
+
+    {"name": "aprovacao.gestor", "label": "Decisão do Gestor", "type": "radio", "options": ["Aprovar", "Reprovar", "Ajustar"], "required": true},
+    {"name": "aprovacao.obs", "label": "Observações do Gestor", "type": "textarea", "required": false, "maxLength": 500}
+  ]
+}

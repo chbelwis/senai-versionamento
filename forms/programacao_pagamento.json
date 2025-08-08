@@ -1,0 +1,9 @@
+{
+  "id": "form_programacao_pagamento",
+  "title": "Programação/Pagamento",
+  "fields": [
+    {"name": "pagamento.data", "label": "Data do Pagamento", "type": "date", "required": true},
+    {"name": "pagamento.comprovante", "label": "Comprovante de Pagamento", "type": "file", "required": false, "accept": ["application/pdf", "image/*"]},
+    {"name": "pagamento.obs", "label": "Observações", "type": "textarea", "required": false, "maxLength": 300}
+  ]
+}
