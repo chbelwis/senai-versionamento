@@ -1,0 +1,33 @@
+processId: FIN_Ressarcimento_Passagens_Aereas_v1
+calendar: business
+slas:
+  - taskId: Task_Aprovacao_Gestor
+    name: Aprovação do Gestor
+    duration: P2D
+    warnBefore: PT4H
+    escalateAfter: P1D
+    escalateTo:
+      role: Gestor_Substituto
+    notifications:
+      - on: onAssign
+      - on: beforeDue
+      - on: onOverdue
+  - taskId: Task_Analise_Controladoria
+    name: Análise Controladoria
+    duration: P2D
+    warnBefore: PT4H
+    escalateAfter: P1D
+    escalateTo:
+      role: Controladoria_Coordenador
+    notifications:
+      - on: onAssign
+      - on: beforeDue
+      - on: onOverdue
+  - taskId: Task_Lancar_ERP
+    name: Lançar ERP
+    duration: P2D
+    warnBefore: PT4H
+  - taskId: Task_Programar_Pagamento
+    name: Programar Pagamento
+    duration: P5D
+    warnBefore: P1D

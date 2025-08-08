@@ -1,0 +1,12 @@
+{
+  "id": "form_lancamento_financeiro",
+  "title": "Lançamento Financeiro/ERP",
+  "fields": [
+    {"name": "erp.integracao_status", "label": "Status Integração ERP", "type": "badge", "readOnly": true},
+    {"name": "erp.titulo_id", "label": "ID do Título/Documento", "type": "text", "required": false},
+    {"name": "erp.classificacao", "label": "Classificação Contábil", "type": "text", "required": true},
+
+    {"name": "pagamento.modalidade", "label": "Modalidade de Pagamento", "type": "select", "options": ["Folha", "Contas a Pagar"], "required": true},
+    {"name": "pagamento.data_prevista", "label": "Data Prevista de Pagamento", "type": "date", "required": true}
+  ]
+}

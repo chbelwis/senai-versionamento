@@ -1,0 +1,49 @@
+{
+  "processId": "FIN_Ressarcimento_Passagens_Aereas_v1",
+  "variables": [
+    {"path": "viagem.origem", "type": "string", "pii": false, "description": "Cidade/airport de origem"},
+    {"path": "viagem.destino", "type": "string", "pii": false, "description": "Cidade/airport de destino"},
+    {"path": "viagem.data_ida", "type": "date", "pii": false, "description": "Data de ida"},
+    {"path": "viagem.data_volta", "type": "date", "pii": false, "description": "Data de volta"},
+    {"path": "viagem.motivo", "type": "string", "pii": false, "description": "Motivo da viagem"},
+
+    {"path": "projeto.codigo", "type": "string", "pii": false},
+
+    {"path": "passageiro.nome", "type": "string", "pii": true, "retention": "365d"},
+    {"path": "passageiro.cpf", "type": "string", "pii": true, "mask": "***.***.***-**", "retention": "365d"},
+    {"path": "colaborador.matricula", "type": "string", "pii": false},
+
+    {"path": "compra.canal", "type": "string", "pii": false},
+    {"path": "compra.eticket", "type": "string", "pii": false},
+    {"path": "compra.valor_tarifa", "type": "number", "pii": false},
+    {"path": "compra.valor_taxas", "type": "number", "pii": false},
+    {"path": "compra.moeda", "type": "string", "pii": false},
+
+    {"path": "adiantamento.existe", "type": "boolean", "pii": false},
+    {"path": "adiantamento.valor", "type": "number", "pii": false},
+
+    {"path": "pagamento.modalidade", "type": "string", "pii": false},
+    {"path": "pagamento.banco", "type": "string", "pii": true},
+    {"path": "pagamento.agencia", "type": "string", "pii": true},
+    {"path": "pagamento.conta", "type": "string", "pii": true},
+
+    {"path": "excecao.flag", "type": "boolean", "pii": false},
+    {"path": "excecao.motivo", "type": "string", "pii": false},
+
+    {"path": "aprovacao.gestor", "type": "string", "pii": false},
+    {"path": "aprovacao.controladoria", "type": "string", "pii": false},
+
+    {"path": "erp.titulo_id", "type": "string", "pii": false},
+    {"path": "erp.integracao_status", "type": "string", "pii": false},
+
+    {"path": "pagamento.data", "type": "date", "pii": false},
+
+    {"path": "controle.duplicidade_hash", "type": "string", "pii": false, "description": "Hash técnico para prevenção de duplicidade"},
+
+    {"path": "conformePolitica", "type": "boolean", "pii": false},
+    {"path": "precisaControladoria", "type": "boolean", "pii": false},
+    {"path": "conformeControladoria", "type": "boolean", "pii": false},
+    {"path": "aprovadoGestor", "type": "boolean", "pii": false},
+    {"path": "adiantamentoExiste", "type": "boolean", "pii": false}
+  ]
+}

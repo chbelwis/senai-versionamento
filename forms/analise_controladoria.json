@@ -1,0 +1,16 @@
+{
+  "id": "form_analise_controladoria",
+  "title": "Análise da Controladoria",
+  "fields": [
+    {"name": "resumo.valor_tarifa", "label": "Tarifa", "type": "currency", "readOnly": true},
+    {"name": "resumo.valor_taxas", "label": "Taxas", "type": "currency", "readOnly": true},
+    {"name": "resumo.moeda", "label": "Moeda", "type": "text", "readOnly": true},
+
+    {"name": "classificacao.centro_custo", "label": "Centro de Custo", "type": "text", "required": true},
+    {"name": "classificacao.projeto", "label": "Projeto", "type": "text", "required": false},
+    {"name": "fiscal.nf_chave", "label": "Chave NF-e (se houver)", "type": "text", "required": false},
+
+    {"name": "excecao.avaliacao", "label": "Exceção de política foi validada?", "type": "radio", "options": ["Sim", "Não", "N/A"], "required": true},
+    {"name": "controladoria.conforme", "label": "Conforme Controladoria?", "type": "radio", "options": ["Sim", "Não"], "required": true},
+    {"name": "controladoria.obs", "label": "Observações", "type": "textarea", "required": false, "maxLength": 500}
+  ]}

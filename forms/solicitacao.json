@@ -1,0 +1,41 @@
+{
+  "id": "form_solicitacao",
+  "title": "Enviar Solicitação de Ressarcimento de Passagem Aérea",
+  "fields": [
+    {"name": "viagem.origem", "label": "Origem", "type": "text", "required": true},
+    {"name": "viagem.destino", "label": "Destino", "type": "text", "required": true},
+    {"name": "viagem.data_ida", "label": "Data de Ida", "type": "date", "required": true},
+    {"name": "viagem.data_volta", "label": "Data de Volta", "type": "date", "required": true},
+    {"name": "viagem.motivo", "label": "Motivo da Viagem", "type": "textarea", "required": true, "maxLength": 500},
+    {"name": "projeto.codigo", "label": "Projeto/Centro de Custo", "type": "text", "required": true},
+
+    {"name": "passageiro.nome", "label": "Nome do Passageiro", "type": "text", "required": true},
+    {"name": "passageiro.cpf", "label": "CPF", "type": "cpf", "required": true},
+    {"name": "colaborador.matricula", "label": "Matrícula", "type": "text", "required": true},
+
+    {"name": "compra.canal", "label": "Canal de Compra", "type": "select", "options": ["Agência", "Cia Aérea", "Site Terceiro"], "required": true},
+    {"name": "compra.eticket", "label": "E-ticket/Número do Bilhete", "type": "text", "required": true},
+    {"name": "compra.valor_tarifa", "label": "Valor da Tarifa", "type": "currency", "required": true},
+    {"name": "compra.valor_taxas", "label": "Valor de Taxas", "type": "currency", "required": true},
+    {"name": "compra.moeda", "label": "Moeda", "type": "select", "options": ["BRL", "USD", "EUR"], "required": true},
+
+    {"name": "adiantamento.existe", "label": "Houve adiantamento?", "type": "boolean", "required": true},
+    {"name": "adiantamento.valor", "label": "Valor do adiantamento", "type": "currency", "required": false, "visibleWhen": "adiantamento.existe == true"},
+
+    {"name": "pagamento.modalidade", "label": "Modalidade de Reembolso", "type": "select", "options": ["Folha", "Contas a Pagar"], "required": true},
+    {"name": "pagamento.banco", "label": "Banco", "type": "text", "required": false, "visibleWhen": "pagamento.modalidade == 'Contas a Pagar'"},
+    {"name": "pagamento.agencia", "label": "Agência", "type": "text", "required": false, "visibleWhen": "pagamento.modalidade == 'Contas a Pagar'"},
+    {"name": "pagamento.conta", "label": "Conta", "type": "text", "required": false, "visibleWhen": "pagamento.modalidade == 'Contas a Pagar'"},
+
+    {"name": "excecao.flag", "label": "Há exceção de política?", "type": "boolean", "required": true},
+    {"name": "excecao.motivo", "label": "Descrição da exceção/justificativa", "type": "textarea", "required": false, "visibleWhen": "excecao.flag == true", "maxLength": 500},
+
+    {"name": "anexos.eticket", "label": "E-ticket/Itinerário", "type": "file", "required": true, "accept": ["application/pdf", "image/*"]},
+    {"name": "anexos.cartoes_embarque", "label": "Cartões de embarque (todos os trechos)", "type": "file", "required": true, "multiple": true, "accept": ["application/pdf", "image/*"]},
+    {"name": "anexos.comprovante_pagamento", "label": "Comprovante de pagamento", "type": "file", "required": false, "accept": ["application/pdf", "image/*"]},
+    {"name": "anexos.nf_servico_agencia", "label": "NF de taxa de serviço da agência (quando aplicável)", "type": "file", "required": false, "accept": ["application/pdf", "image/*"]},
+    {"name": "anexos.autorizacao_previa", "label": "Autorização prévia (se houver)", "type": "file", "required": false, "accept": ["application/pdf", "image/*"]},
+
+    {"name": "politica.concorda", "label": "Declaro estar de acordo com a Política de Viagens", "type": "checkbox", "required": true}
+  ]
+}
